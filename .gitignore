@@ -12,7 +12,7 @@ bem_pycuda/tree/direct.py
 bem_pycuda/tree/multipole.py
 util/semi_analyticalwrap.py
 bem_pycuda/regression_tests/regression_*
-
+bem_pycuda/.DS_Store
 
 
 bem_pycuda/#main_asymmetric.py#
@@ -26,6 +26,7 @@ bem_pycuda/Vip15.txt
 bem_pycuda/input_files/1d1sM/
 bem_pycuda/input_files/2d1sM/
 bem_pycuda/input_files/2d2sM/
+bem_pycuda/.DS_Store
 #bem_pycuda/input_files/sphere_single.param
 #bem_pycuda/input_files/test_stern_2D_1S.config
 #bem_pycuda/input_files/test_stern_2D_1S_M.config
