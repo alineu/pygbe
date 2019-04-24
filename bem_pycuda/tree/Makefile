@@ -6,7 +6,7 @@ OPTS = -fPIC -O3 -funroll-loops -msse3 -fopenmp
 
 PY_VER=$(shell python -c "import sys;t='{v[0]}.{v[1]}'.format(v=list(sys.version_info[:2]));sys.stdout.write(t)")
 PY_INC=/usr/include/python$(PY_VER)
-PY_LIB=/usr/include/python$(PY_VER)
+PY_LIB=/usr/local/lib/python$(PY_VER)/dist-packages/numpy/core/include
 
 all: calc_mult mult dir link
 

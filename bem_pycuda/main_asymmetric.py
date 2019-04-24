@@ -166,10 +166,15 @@ else:
 
 tol_picard = 1e-4
 
-alpha = 0.5#0.320464
+alpha = 0.9396#0.320464
+beta = -18.7226#-46.951476
+gamma = 0.4749#-1.182070
+mu = 0.2306
+'''alpha = 0.5#0.320464
 beta = -60.#-46.951476
 gamma = -0.5#-1.182070
 mu = -alpha*tanh(-gamma)
+'''
 phi = zeros(param.Neq)
 
 # Asymmetric summary
@@ -222,10 +227,10 @@ while phi_L2error>tol_picard and picardIter<Npicard:
                 if picardIter==0: 
                     sigma = zeros(len(RHS_sigma))
 
-                if sum(abs(RHS_sigma))>1e-12:
+                '''if sum(abs(RHS_sigma))>1e-12:
                     timing.AI_int = 0
 		    print 'Solve for sigma...'
-                    sigma = gmres_sigma(s, ss, sigma, RHS_sigma, param, ind0, timing, kernel)
+                    sigma = gmres_sigma(s, ss, sigma, RHS_sigma, param, ind0, timing, kernel)'''
                 for ff in field_array:
                     if len(ff.parent)>0:
                         if ff.parent[0]==ss:
