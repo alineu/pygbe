@@ -3,7 +3,6 @@ geometry/sphere/sphere520K*
 
 # file types
 *.pyc
-*.txt
 *.o
 *.so
 *_wrap.cxx
