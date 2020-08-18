@@ -30,26 +30,28 @@ import sys
 import math
 sys.path.append('../util')
 
-def scanOutput(filename):
+def scanOutput(file_name):
     
     flag = 0
-    for line in file(filename):
-        line = line.split()
-        if len(line)>0:
-            if line[0]=='Converged':
-                iterations = int(line[2])
-            if line[0]=='Total' and line[1]=='elements':
-                N = int(line[-1])
-            if line[0]=='Totals:':
-                flag = 1
-            if line[0]=='Esolv' and flag==1:
-                Esolv = float(line[2])
-            if line[0]=='Esurf' and flag==1:
-                Esurf = float(line[2])
-            if line[0]=='Ecoul' and flag==1:
-                Ecoul = float(line[2])
-            if line[0]=='Time' and flag==1:
-                Time = float(line[2])
+    with open(file_name) as filename
+    
+      for line in file(filename):
+          line = line.split()
+          if len(line)>0:
+              if line[0]=='Converged':
+                  iterations = int(line[2])
+              if line[0]=='Total' and line[1]=='elements':
+                  N = int(line[-1])
+              if line[0]=='Totals:':
+                  flag = 1
+              if line[0]=='Esolv' and flag==1:
+                  Esolv = float(line[2])
+              if line[0]=='Esurf' and flag==1:
+                  Esurf = float(line[2])
+              if line[0]=='Ecoul' and flag==1:
+                  Ecoul = float(line[2])
+              if line[0]=='Time' and flag==1:
+                  Time = float(line[2])
 
     return N, iterations, Esolv, Esurf, Ecoul, Time
           

@@ -1,0 +1,17 @@
+SetFactory("OpenCASCADE");
+Mesh.CharacteristicLengthMin=3.0;
+Mesh.CharacteristicLengthMax=4.0;
+Mesh.Algorithm=6.0;
+Mesh.SecondOrderLinear=1;
+Mesh.MshFileVersion=1;
+l = 59.75057;
+w = 65.90000;
+h = 50.00000;
+st = 0.00000;
+x_c = 0.00000;
+y_c = 0.00000;
+z_c = 0.00000;
+Box(1) = {x_c-l/2-st, y_c-w/2-st, z_c-st, l+2*st, w+2*st, h+2*st};
+Mesh 2;
+Save StrCat(StrPrefix(General.FileName),".msh");
+Save StrCat(StrPrefix(General.FileName),".stl");
