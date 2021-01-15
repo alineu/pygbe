@@ -1,11 +1,14 @@
 # Large files
 geometry/sphere/sphere520K*
+test_Cube
 
 # file types
 *.pyc
 *.o
 *.so
 *_wrap.cxx
+*.ipynb_checkpoints
+
 
 # specific files
 bem_pycuda/tree/calculateMultipoles.py
