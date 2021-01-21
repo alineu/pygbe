@@ -19,6 +19,7 @@ bem_pycuda/regression_tests/regression_*
 bem_pycuda/.DS_Store
 
 # Jupyter notebook checkpoints
+.ipynb_checkpoints
 **/.ipynb_checkpoints
 
 # other
