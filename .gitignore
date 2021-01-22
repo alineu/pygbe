@@ -13,7 +13,7 @@ test_Cube
 *.pptx
 
 #tutorials
-tutorials/*.pdf
+tutorials/*.html
 tutorials/*.ipynb
 
 # specific files
