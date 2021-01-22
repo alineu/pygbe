@@ -7,8 +7,14 @@ test_Cube
 *.o
 *.so
 *_wrap.cxx
-*.ipynb_checkpoints
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*.ppt
+*.pptx
 
+#tutorials
+tutorials/*.pdf
+tutorials/*.ipynb
 
 # specific files
 bem_pycuda/tree/calculateMultipoles.py
@@ -17,10 +23,6 @@ bem_pycuda/tree/multipole.py
 util/semi_analyticalwrap.py
 bem_pycuda/regression_tests/regression_*
 bem_pycuda/.DS_Store
-
-# Jupyter notebook checkpoints
-.ipynb_checkpoints
-**/.ipynb_checkpoints
 
 # other
 bem_pycuda/#main_asymmetric.py#

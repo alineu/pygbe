@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+  <head>
+    <title>OptiMed</title>
+    <!-- <img class="bg"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- styles -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    </head>
+<body class="container">
+<h2>Solvation Gibbs Energy Calculation</h2>
+<p>
+	To run, <a href="https://github.com/alineu/pygbe">PyGBe</a> needs two input files: a <em><strong>config</strong></em> file (<code>*.config</code>) and a <em><strong>parameters</strong></em> file (<code>*.param</code>), which need to be located in the <code>./bem_pycuda/input_files</code> directory.
+	The following shows an example of a run script:
+	<pre>python main_asymmetric.py input_files/problem.param input_files/problem.config --asymmetric --chargeForm</pre>
+	<ol>
+		<li>The first argument (<code>main_asymmetric.py</code>) specifies the python script the carries out solvation free energy calculations</li>
+		<li>The second argument (<code>input_files/problem.param</code>) specifies the relative path to the <strong>param</strong> file location</li>
+		<li>The third argument (<code>input_files/problem.config</code>) specifies the relative path to the <strong>config</strong> file location</li>
+		<li>The <code>--asymmetric</code> flag activates the asymmetric SLIC boundary condition</li>
+		<li>The <code>--chergeForm</code> denotes the type of charge distribution</li>
+	</ol>
+</p>
+<h3>config file</h3>
+<p>
+	<strong>config</strong> file specifies the geometry and physical properties of the system. The following is an example of a config file.
+	<a id="config_file_example"></a>
+	<pre>FILE    path/to/stern_mesh  stern_layer
+FILE    path/to/diel_mesh   dielectric_interface
+--------------------------------
+PARAM   LorY E?  Dielec  kappa  charges?  coulomb?    charge_file       Nparent  parent  Nchild  children
+FIELD   1    0   78.36   1e-12  0         0           NA                0        NA      1       0
+FIELD   1    0   78.36   1e-12  0         0           NA                1        0       1       1
+FIELD   1    1   1       1e-12  1         1           path/to/mol.pqr   1        1       0       NA</pre>
+which corresponds to the system shown below:
+	<p class="text-align: center;">
+    <img src="https://github.com/alineu/pygbe/blob/asymmetric/tutorials/img/bem-stern-color.png?raw=true" style="width: 600px; display: block; margin: 10px auto 20px;"/>
+    </p>
+	<strong>config</strong> file consists of two parts, separated with dashes, as seen above.
+	<h4><code>FILE</code> section</h4>
+	<p>
+		Lines starting with <code>FILE</code> indicate that the line specifies the geometry and type of one interface.
+		The first arguement after <code>FILE</code> determines the relative path to the interface mesh files, <code>filename.vert</code> and <code>filename.face</code>. <code>filename.vert</code> containes the location of the vertices of the disretized traingular elements and <code>filename.vert</code> is the connectivity table for the vertices. The <code>*.face</code> and <code>*.vert</code> files can be generated using Michael Sanner's Molecular Surface program <a href="http://mgltools.scripps.edu/downloads#msms"><code>MSMS</code></a>. This link shows an example on how to use <code>MSMS</code>.
+		To account for more than one surface (ie. for Stern layers, solvent filled cavities, several proteins), more than one FILE line is needed. For instance, the sample <a href="#config_file_example">config</a> file accounts for two surface, described in lines 1 and 2.
+		After <code>filename</code>, the user must specify what kind of surface the <code>filename</code> describes. It can be:
+		<ul>
+			<li> <code>stern_layer</code>: surface separates Stern layer (region shown in <span style="background-color: #DCE4F3;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> ) from solvent</li>
+			<li> <code>dielectric_interface</code>: surface separates low dielectric (inside protein shown in <span style="background-color: #FFF3CC;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> ) and high dielectric (outside protein) regions.</li>
+			<li> <code>internal_cavity</code>: surface is an internal cavity (a result of <code>'-all_components'</code> flag in <code>MSMS</code>). This is important to specify because by default <code>MSMS</code> changes the vertex ordering for internal cavities.</li>
+			<li> <code>dirichlet_surface</code>: surface of specified potential. The value of this potential is read from a text file which has to be specified next to <em>'dirichlet_surface'</em>.</li>
+			<li> <code>neumann_surface</code>: surface of specified potential. The value of this potential is read from a text file which has to be specified next to <em>'neumann_surface'</em>.</li>
+		</ul>
+	</p>
+	The first line in the sample <a href="#config_file_example">config</a> file specifies
+	<ol>
+		<li>the relative path to the Stern surface (shown with dots in the schematic) geometry where <code>path/to</code> is a folder containing <code>stern_mesh.face</code> and <code>stern_mesh.vert</code>.</li>
+		<li>the kind of surface which is <code>stern_layer</code>.</li>
+	</ol>
+	Similarly, the second line in the sample <a href="#config_file_example">config</a> file specifies this information for the dielectric interface (shown with thick black line in the schematic).
+	<h4><code>FIELD</code> section</h4>
+	Lines starting with <code>FIELD</code> indicate that the line specifies physical parameters of one region. These parameters include:
+	<ul>
+		<li><code>LorY</code> indicates that the electrostatic potential in the region is
+			<ul>
+				<li>1: Laplace</li>
+				<li>2: Yukawa</li>
+			</ul>
+		</li><br>
+		<li><code>E?</code>
+			<ul>
+				<li>0: don't calculate the energy in this region</li>
+				<li>1: calculate the energy in this region</li>
+			</ul>
+			Note: if region is surrounded by a <em>dirichlet</em> or <em>neumann surface</em>, surface energy will be calculated.
+		</li><br>
+		<li><code>Dielec</code>: dielectric constant of the region</li><br>
+		<li><code>kappa</code>: inverse Debye-length</li><br>
+		<li><code>charges?</code>
+			<ul>
+				<li>0: no charges inside the region</li>
+				<li>1: there are charges in the region</li>
+			</ul>
+		</li><br>
+		<li><code>coulomb?</code>
+			<ul>
+				<li>0: don't calculate Coulomb energy in this region</li>
+				<li>1: calculate Coulomb energy in this region</li>
+			</ul>
+		</li><br>
+		<li><code>charge_file</code>
+			<ul>
+				<li><code>NA</code> if the region does not contain charges</li>
+				<li>relative path to the <code>*.pqr</code> file if the region contains charges. For example, the dielectric region in the schematic above (region <code>I</code> shown in <span style="background-color: #FFF3CC;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> ) has a corresponding charge distribution file <code>mol.pqr</code> located at <code>path/to/</code> directory relative to the config file location.</li>
+			</ul>
+		</li><br>
+		<li><code>Nparent</code>: number of <em>'parent'</em> surfaces (surface containing this region).
+			<ul>
+				<li>0: if the region corresponds to an infinite region, e.g., the solvent region <code>III</code> in the schematic</li>
+				<li>1: if the region is bounded by a surface, e.g., the Stern layer <code>II</code> bounded by the Stern surface in the schematic</li>
+			</ul>
+		</li><br>
+		<li><code>parent</code>: the region's parent surface mesh index (starting from 0), according to their position in the <code>FILE</code> section. Takes <code>NA</code> if the region is infinite, otherwise an <code>int</code>.
+			For instance in the sample <a href="#config_file_example">config</a> file, the first line in the <code>FIELD</code> section describes the properties of solvent as an infinite region (region <code>III</code> in the schematic). Because the solvent region is infinite and not bounded by another surface, the <code>parent</code> parameter takes the value <code>NA</code>.
+			Similarly, the second line in the <code>FIELD</code> section corresponds to the Stern layer (shown in <span style="background-color: #DCE4F3;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> in the schematic). This region is bounded by the Stern surface, therefore, the <code>parent</code> parameter takes the value <code>0</code> because the Stern surface is the first surface (hence the <code>0</code> index) defined in the <code>FILE</code> section.
+		</li><br>
+		<li><code>Nchild</code>: number of child surfaces, i.e., surfaces completely contained in this region. The Stern surface in the schematic is completely contained in the solvent region <code>III</code> so the <code>Nchild</code> parameter for the solvent region is <code>1</code>.
+			Similarly, the dielectric surface is contained in the Stern layer (region <code>II</code>) so the <code>Nchild</code> parameter for the Stern layer is <code>1</code>.
+		</li><br>
+		<li><code>children</code>: mesh file index (indices if the region has more than one child) for the children surfaces completely contained in this region, using the same convention as the <code>parent</code> parameter.  </li>
+	</ul>
+</p>
+<h3>Param file</h3>
+<p>
+	<strong>parameters</strong> file controls the computational parameters of the job. The sollowing shows an example of a <code>*.param</code> file
+	<pre>Precision   double
+K           7
+Nk          13 
+K_fine      19
+thresold    0.5
+BSZ         128
+restart     500
+tolerance   1e-5
+max_iter    1000
+P           6 
+eps         1e-12
+NCRIT       500
+theta       0.5   
+GPU         1</pre>
+	<ul>
+		<li><code>Precision</code>: double or float. (float not supported yet!).</li><br>
+		<li><code>K</code>: number of Gauss quadrature points per element (1, 3, 4, and 7 are supported).</li><br>
+		<li><code>Nk</code>:           number of Gauss quadrature points per triangle edge for semi-analytical integration.</li><br>
+		<li><code>threshold</code>:    defines region near singularity where semi-analytical technique is used. if <code>sqrt(2*Area)/r > threshold</code>, integration is done semi-analytically.</li><br>
+		<li><code>BSZ</code>: CUDA block size.</li><br>
+		<li><code>restart</code>: number of iterations for GMRES to do restart.</li><br>
+		<li><code>tolerance</code>: GMRES tolerance.</li><br>
+		<li><code>max_iter</code>: maximum number of GMRES iterations.</li><br>
+		<li><code>P</code>: order of expansion in treecode.</li><br>
+		<li><code>eps</code>: epsilon machine.</li><br>
+		<li><code>NCRIT</code>: maximum number of boundary elements per twig box of tree structure.</li><br>
+		<li><code>theta</code>: multipole acceptance criterion of treecode.</li><br>
+		<li><code>GPU</code>
+			<ul>
+				<li>0: don't use GPU.</li>
+				<li>1: use GPU.</li>
+			</ul>
+		</li>
+	</ul>
+	More details regarding the parameter definitions can be found in this <a href="https://arxiv.org/pdf/1309.4018.pdf">paper</a>.
+</p>
+</body>
+</html>
