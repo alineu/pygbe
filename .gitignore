@@ -16,11 +16,11 @@ test_*/**
 *.geo_unrolled
 *.msh
 src/**
+*.pdf
 
 #tutorials
 tutorials/*.html
-tutorials/*.ipynb
-tutorials/img
+#tutorials/*.ipynb
 
 # specific files
 bem_pycuda/tree/calculateMultipoles.py
