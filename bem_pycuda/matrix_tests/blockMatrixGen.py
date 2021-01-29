@@ -96,7 +96,7 @@ def blockMatrix2(tar, src, WK, kappa, threshold, LorY, xk, wk, K_fine, eps):
 
         N_analytical += len(an_integrals)
 
-    print '\t%i analytical integrals'%(N_analytical/Ns)
+    print('\t%i analytical integrals'%(N_analytical/Ns))
 
     return K_lyr, V_lyr
 
@@ -192,7 +192,7 @@ def blockMatrix(tar, src, WK, kappa, threshold, LorY, xk, wk, K_fine, eps):
 
                 N_analytical += 1
 
-    print '\t%i analytical integrals'%(N_analytical/Ns)
+    print('\t%i analytical integrals'%(N_analytical/Ns))
 
     return K_lyr, V_lyr, Kp_lyr
 

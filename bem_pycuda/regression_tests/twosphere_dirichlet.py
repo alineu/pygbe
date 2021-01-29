@@ -59,7 +59,7 @@ mesh = numpy.array(['500','2K','8K','32K','130K'])
 comm = './main.py regression_tests/input_files/sphere_fine.param regression_tests/input_files/twosphere_dirichlet_'
 out = 'regression_tests/output_aux'
 
-print 'Runs for two spherical surfaces surfaces with set phi'
+print('Runs for two spherical surfaces surfaces with set phi')
 N = numpy.zeros(len(mesh))
 iterations = numpy.zeros(len(mesh))
 Esolv = numpy.zeros(len(mesh))
@@ -67,14 +67,14 @@ Esurf = numpy.zeros(len(mesh))
 Ecoul = numpy.zeros(len(mesh))
 Time = numpy.zeros(len(mesh))
 for i in range(len(mesh)):
-    print 'Start run for mesh '+mesh[i]
+    print('Start run for mesh '+mesh[i])
     cmd = comm + mesh[i] + '.config > ' + out
     os.system(cmd)
-    print 'Scan output file'
+    print('Scan output file')
     N[i],iterations[i],Esolv[i],Esurf[i],Ecoul[i],Time[i] = scanOutput(out)
     
 
-print 'Runs for isolated surface'
+print('Runs for isolated surface')
 
 comm = './main.py regression_tests/input_files/sphere_fine.param regression_tests/input_files/dirichlet_surface'
 out = 'regression_tests/output_aux'
@@ -86,10 +86,10 @@ Esurf_surf = numpy.zeros(len(mesh))
 Ecoul_surf = numpy.zeros(len(mesh))
 Time_surf = numpy.zeros(len(mesh))
 for i in range(len(mesh)):
-    print 'Start run for mesh '+mesh[i]
+    print('Start run for mesh '+mesh[i])
     cmd = comm + mesh[i] + '.config > ' + out
     os.system(cmd)
-    print 'Scan output file'
+    print('Scan output file')
     N_surf[i],iterations_surf[i],Esolv_surf[i],Esurf_surf[i],Ecoul_surf[i],Time_surf[i] = scanOutput(out)
 
 Einter = Esurf - 2*Esurf_surf # Isolated sphere has to be done twice
@@ -99,12 +99,12 @@ analytical = constant_potential_twosphere_dissimilar(1., 1., 4., 4., 12., 0.125,
 
 error = abs(Einter-analytical)/abs(analytical)
 
-print '\nNumber of elements : '+str(N)
-print 'Number of iteration: '+str(iterations)
-print 'Interaction energy : '+str(Einter)
-print 'Analytical solution: %f kcal/mol'%analytical
-print 'Error              : '+str(error)
-print 'Total time         : '+str(total_time)
+print('\nNumber of elements : '+str(N))
+print('Number of iteration: '+str(iterations))
+print('Interaction energy : '+str(Einter))
+print('Analytical solution: %f kcal/mol'%analytical)
+print('Error              : '+str(error))
+print('Total time         : '+str(total_time))
 
 
 flag = 0
@@ -112,10 +112,10 @@ for i in range(len(error)-1):
     rate = error[i]/error[i+1]
     if abs(rate-4)>0.6:
         flag = 1
-        print 'Bad convergence for mesh %i to %i, with rate %f'%(i,i+1,rate)
+        print('Bad convergence for mesh %i to %i, with rate %f'%(i,i+1,rate))
 
 if flag==0:
-    print '\nPassed convergence test!'
+    print('\nPassed convergence test!')
 
 
 font = {'family':'serif','size':10}

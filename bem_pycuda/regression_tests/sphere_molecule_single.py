@@ -66,10 +66,10 @@ Esurf = zeros(len(mesh))
 Ecoul = zeros(len(mesh))
 Time = zeros(len(mesh))
 for i in range(len(mesh)):
-    print 'Start run for mesh '+mesh[i]
+    print('Start run for mesh '+mesh[i])
     cmd = comm + mesh[i] + '.config > ' + out
     os.system(cmd)
-    print 'Scan output file'
+    print('Scan output file')
     N[i],iterations[i],Esolv[i],Esurf[i],Ecoul[i],Time[i] = scanOutput(out)
 
 total_time = Time
@@ -83,17 +83,17 @@ for i in range(len(error)-1):
     rate = error[i]/error[i+1]
     if abs(rate-4)>0.6:
         flag = 1
-        print 'Bad convergence for mesh %i to %i, with rate %f'%(i,i+1,rate)
+        print('Bad convergence for mesh %i to %i, with rate %f'%(i,i+1,rate))
 
 if flag==0:
-    print '\nPassed convergence test!'
+    print('\nPassed convergence test!')
 
-print '\nNumber of elements  : '+str(N)
-print 'Number of iterations: '+str(iterations)
-print 'Total energy        : '+str(Esolv)
-print 'Analytical solution : %f kcal/mol'%analytical
-print 'Error               : '+str(error)
-print 'Total time          : '+str(total_time)
+print('\nNumber of elements  : '+str(N))
+print('Number of iterations: '+str(iterations))
+print('Total energy        : '+str(Esolv))
+print('Analytical solution : %f kcal/mol'%analytical)
+print('Error               : '+str(error))
+print('Total time          : '+str(total_time))
 
 font = {'family':'serif','size':10}
 fig = plt.figure(figsize=(3,2), dpi=80)

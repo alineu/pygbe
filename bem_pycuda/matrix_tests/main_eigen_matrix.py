@@ -49,8 +49,8 @@ tic = time.time()
 config_file = 'matrix_tests/input_files/sphere_single.config'
 param_file ='matrix_tests/input_files/sphere.param'
 
-print 'Parameters file: ' + param_file 
-print 'Config file    : ' + config_file 
+print('Parameters file: ' + param_file )
+print('Config file    : ' + config_file )
 
 param = parameters()
 readParameters(param, param_file)
@@ -61,44 +61,44 @@ surf_array, Neq  = initializeSurf(field_array, param, config_file)
 i = -1
 for f in field_array:
     i += 1
-    print '\nField %i:'%i
+    print('\nField %i:'%i)
     if f.LorY==1: 
-        print 'Is a Laplace region'
+        print('Is a Laplace region')
     elif f.LorY==2:
-        print 'Is a Yukawa region'
+        print('Is a Yukawa region')
     else:
-        print 'Is enclosed by a dirichlet or neumann surface'
+        print('Is enclosed by a dirichlet or neumann surface')
     if len(f.parent)>0:
-        print 'Is enclosed by surface %i'%(f.parent[0])
+        print('Is enclosed by surface %i'%(f.parent[0]))
     else:
-        print 'Is the solvent'
+        print('Is the solvent')
     if len(f.child)>0:
-        print 'Contains surfaces ' + str(f.child)
+        print('Contains surfaces ' + str(f.child))
     else:
-        print 'Is an inner-most region'
-    print 'Parameters: kappa: %f, E: %f'%(f.kappa, f.E)
+        print('Is an inner-most region')
+    print('Parameters: kappa: %f, E: %f'%(f.kappa, f.E))
 
-print '\nTotal elements : %i'%param.N
-print 'Total equations: %i'%param.Neq
+print('\nTotal elements : %i'%param.N)
+print('Total equations: %i'%param.Neq)
     
 
 JtoCal = 4.184
 
 #### Compute interactions
-print '\nCompute interactions'
+print('\nCompute interactions')
 computeInter(surf_array, field_array, param)
 
 #### Generate RHS
-print '\nGenerate RHS'
+print('\nGenerate RHS')
 F, F_sym, X_sym, Nblock = generateRHS(surf_array, field_array, Neq)
 
-print '\nRHS generated...'
+print('\nRHS generated...')
 
 
 #### Generate matrix
 M, M_sym = generateMatrix(surf_array, Neq) 
 
-print '\nSymbolic system:\n'
+print('\nSymbolic system:\n')
 counter = 0
 for i in range(len(M_sym)):
     for j in range(len(M_sym[i])):
@@ -108,9 +108,9 @@ for i in range(len(M_sym)):
             for l in range(len(M_sym[i][j][k])):
                 buff += M_sym[i][j][k][l]
         if counter==Nblock/2+1:
-            print '|'+buff+'|  X  |'+X_sym[i][j]+'|  =  |'+F_sym[i][j]+'|'
+            print('|'+buff+'|  X  |'+X_sym[i][j]+'|  =  |'+F_sym[i][j]+'|')
         else:
-            print '|'+buff+'|     |'+X_sym[i][j]+'|     |'+F_sym[i][j]+'|'
+            print('|'+buff+'|     |'+X_sym[i][j]+'|     |'+F_sym[i][j]+'|')
 
 M *= 1/(4*pi)
 Nh = len(surf_array[0].xi)
@@ -125,13 +125,13 @@ for i in range(len(KL)):
 KY_inv = inv(KY)
 VL_inv = inv(VL)
 
-print 'Matrices inverted'
+print('Matrices inverted')
 
 M_aux1 = dot(VL_inv,KL)
 M_aux2 = dot(VY,M_aux1)
 Mat = dot(KY_inv,M_aux2)
 
-print 'Matrix generated'
+print('Matrix generated')
 
 eVal,eVec = eig(-Mat)
 
@@ -145,8 +145,8 @@ E1_lap = 1*(1+Lambda)/(Lambda-1)
 E1_yuk = 1/real(eVal)
 w_lap = sqrt(1/(1-E1_lap))
 w_yuk = sqrt(1/(1-E1_yuk))
-print 'Yukawa-Laplace difference'
-print abs(w_lap-w_yuk)[0:50]/abs(w_lap)[0:50]
+print('Yukawa-Laplace difference')
+print(abs(w_lap-w_yuk)[0:50]/abs(w_lap)[0:50])
 
 P = zeros((len(M),3))
 nx = surf_array[0].normal[:,0]
@@ -160,9 +160,9 @@ for i in range(len(Mat)):
 
 Plarge = where(sum(abs(P[0:50,:]),axis=1)>1e-10)[0]
 test = 2*pi/real(eVal)
-print 'Plarge'
-print Plarge
-print abs(w_lap-w_yuk)[Plarge]/abs(w_lap)[Plarge] 
+print('Plarge')
+print(Plarge)
+print(abs(w_lap-w_yuk)[Plarge]/abs(w_lap)[Plarge] )
 
 NN = len(surf_array[0].xi)
 X = zeros((NN,3))
@@ -176,10 +176,10 @@ quit()
 
 # Generate preconditioner
 # Inverse of block diagonal matrix
-print '\n\nGenerate preconditioner'
+print('\n\nGenerate preconditioner')
 Ainv = generatePreconditioner(surf_array)
 
-print 'preconditioner generated'
+print('preconditioner generated')
 
 MM = Ainv*M
 FF = Ainv*F
@@ -188,7 +188,7 @@ FF = Ainv*F
 
 savetxt('RHS_matrix.txt',FF)
 
-print '\nCalculation for both spheres'
+print('\nCalculation for both spheres')
 tec = time.time()
 phi = zeros(len(F))
 phi = gmres_solver(MM, phi, FF, param.restart, param.tol, param.max_iter) # Potential both spheres
@@ -197,7 +197,7 @@ toc = time.time()
 
 savetxt('phi_matrix.txt',phi)
 
-print '\nEnergy calculation'
+print('\nEnergy calculation')
 fill_phi(phi, surf_array)
 
 Esolv, field_Esolv = solvationEnergy(surf_array, field_array, param)
@@ -208,18 +208,18 @@ Esurf, surf_Esurf = surfaceEnergy(surf_array, param)
 
 toc = time.time()
 
-print 'Esolv:'
+print('Esolv:')
 for i in range(len(Esolv)):
-    print 'Region %i: %f kcal/mol'%(field_Esolv[i],Esolv[i])
-print 'Esurf:'
+    print('Region %i: %f kcal/mol'%(field_Esolv[i],Esolv[i]))
+print('Esurf:')
 for i in range(len(Esurf)):
-    print 'Surface %i: %f kcal/mol'%(surf_Esurf[i],Esurf[i])
-print 'Ecoul:'
+    print('Surface %i: %f kcal/mol'%(surf_Esurf[i],Esurf[i]))
+print('Ecoul:')
 for i in range(len(Ecoul)):
-    print 'Region %i: %f kcal/mol'%(field_Ecoul[i],Ecoul[i])
+    print('Region %i: %f kcal/mol'%(field_Ecoul[i],Ecoul[i]))
 
-print '\nTotals:'
-print 'Esolv = %f kcal/mol'%sum(Esolv)
-print 'Esurf = %f kcal/mol'%sum(Esurf)
-print 'Ecoul = %f kcal/mol'%sum(Ecoul)
-print '\nTime = %f s'%(toc-tic)
+print('\nTotals:')
+print('Esolv = %f kcal/mol'%sum(Esolv))
+print('Esurf = %f kcal/mol'%sum(Esurf))
+print('Ecoul = %f kcal/mol'%sum(Ecoul))
+print('\nTime = %f s'%(toc-tic))

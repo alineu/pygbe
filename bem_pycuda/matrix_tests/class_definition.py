@@ -191,7 +191,7 @@ def initializeSurf(field_array, param, filename):
     Nsurf = len(files)
 
     for i in range(Nsurf):
-        print '\nReading surface %i from file '%i + files[i]
+        print('\nReading surface %i from file '%i + files[i])
 
         s = surfaces()
 
@@ -205,7 +205,7 @@ def initializeSurf(field_array, param, filename):
         triangle_raw = readTriangle(files[i]+'.face', s.surf_type)
         Area_null = zeroAreas(s, triangle_raw, Area_null)
         s.triangle = delete(triangle_raw, Area_null, 0)
-        print 'Removed areas=0: %i'%len(Area_null)
+        print('Removed areas=0: %i'%len(Area_null))
 
         # Look for regions inside/outside
         for j in range(Nsurf+1):

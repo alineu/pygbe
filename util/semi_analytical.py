@@ -209,7 +209,7 @@ xk,wk = GQ_1D(5)
 
 #for i in range(len(x)):
 #    Q1,Q2 = GQ(y,x[i],kappa,same)
-#    print Q1,Q2
+#    print(Q1,Q2)
 
 IY,dIY,IL,dIL = SA_arr(y,x,kappa,same,xk,wk)
 
@@ -220,11 +220,11 @@ dWL = zeros(2)
 y1D = ravel(y)
 x1D = ravel(x)
 SA_wrap_arr(y1D,x1D,WY,dWY,WL,dWL,kappa,same,xk,wk)
-print IY, WY 
-print dIY, dWY
-print IL, WL
-print dIL, dWL
+print(IY, WY )
+print(dIY, dWY)
+print(IL, WL)
+print(dIL, dWL)
 
-#print 'Error G : %s'%(abs(Q1-I1)/I1)
-#print 'Error dG: %s'%(abs(Q2-I2)/I2)
+#print('Error G : %s'%(abs(Q1-I1)/I1))
+#print('Error dG: %s'%(abs(Q2-I2)/I2))
 """

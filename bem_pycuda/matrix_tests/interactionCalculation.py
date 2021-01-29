@@ -40,7 +40,7 @@ def computeInter(surf_array, field_array, param):
             tar = surf_array[i]
 #           Of child surfaces
             for j in f.child:
-                print 'Target: %i, Source: %i'%(i,j)
+                print('Target: %i, Source: %i'%(i,j))
                 src = surf_array[j]
                 K_lyr,V_lyr,Kp_lyr = blockMatrix(tar, src, WK, f.kappa, param.threshold, f.LorY, xk, wk, param.K_fine, param.eps)
                 if i==j:    # Self-external
@@ -80,7 +80,7 @@ def computeInter(surf_array, field_array, param):
 #           Of parent surface
             if len(f.parent)>0:
                 j = f.parent[0]
-                print 'Target: %i, Source: %i'%(i,j)
+                print('Target: %i, Source: %i'%(i,j))
                 src = surf_array[j]
                 K_lyr,V_lyr,Kp_lyr = blockMatrix(tar, src, WK, f.kappa, param.threshold, f.LorY, xk, wk, param.K_fine, param.eps)
                 if f.LorY==1:   # if Laplace
@@ -104,7 +104,7 @@ def computeInter(surf_array, field_array, param):
             tar = surf_array[i]
 #           Of child surfaces
             for j in f.child:
-                print 'Target: %i, Source: %i'%(i,j)
+                print('Target: %i, Source: %i'%(i,j))
                 src = surf_array[j]
                 K_lyr,V_lyr,Kp_lyr = blockMatrix(tar, src, WK, f.kappa, param.threshold, f.LorY, xk, wk, param.K_fine, param.eps)
                 if f.LorY==1:   # if Laplace
@@ -124,7 +124,7 @@ def computeInter(surf_array, field_array, param):
 
 #           Of parent surface (self-internal)
             j = i
-            print 'Target: %i, Source: %i'%(i,j)
+            print('Target: %i, Source: %i'%(i,j))
             src = surf_array[j]
             K_lyr,V_lyr,Kp_lyr = blockMatrix(tar, src, WK, f.kappa, param.threshold, f.LorY, xk, wk, param.K_fine, param.eps)
             Diag = 2*pi*identity(len(K_lyr))

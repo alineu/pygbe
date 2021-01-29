@@ -26,7 +26,7 @@ All functions output the analytical solution in kcal/mol
 from numpy import *
 from scipy import special
 from scipy.special import lpmv
-from scipy.misc import factorial
+from scipy.special import factorial
 from math import gamma
 from scipy.linalg import solve
 
@@ -295,9 +295,9 @@ def constant_potential_twosphere(phi01, phi02, r1, r2, R, kappa, epsilon):
     U1 = 2*pi*phi01*(phi01*exp(kappa*r1)*(kappa*r1)*(kappa*r1)/sinh(kappa*r1) - pi*a0/(2*i1))
     U2 = 2*pi*phi02*(phi02*exp(kappa*r2)*(kappa*r2)*(kappa*r2)/sinh(kappa*r2) - pi*b0/(2*i2))
 
-    print 'U1: %f'%U1
-    print 'U2: %f'%U2
-    print 'E: %f'%(U1 + U2) 
+    print('U1: %f'%U1)
+    print('U2: %f'%U2)
+    print('E: %f'%(U1 + U2) )
     C1 = C0*C0*epsilon/kappa
     u1 = U1*C1
     u2 = U2*C1
@@ -780,7 +780,7 @@ def constant_potential_twosphere_identical(phi01, phi02, r1, r2, R, kappa, epsil
    
     U = 4*pi * ( -pi/2 * a0/phi01 * 1/sinh(kappa*r1) + kappa*r1 + kappa*r1/tanh(kappa*r1) )
 
-#    print 'E: %f'%U
+#    print('E: %f'%U)
     C0 = qe**2*Na*1e-3*1e10/(cal2J*E_0)
     C1 = r1*epsilon*phi01*phi01
     E_inter = U*C1*C0
@@ -866,7 +866,7 @@ kappa = 0.1
 epsilon = 80.
 
 E_inter = constant_potential_twosphere(phi01, phi02, r1, r2, R, kappa, epsilon)
-print E_inter
+print(E_inter)
 '''
 
 '''
@@ -888,6 +888,6 @@ PHI_P = an_P(q, xq, E_1, E_2, E_0, R, kappa, a, N)
 JtoCal = 4.184    
 #E_solv_sph = 0.5*sum(q*PHI_sph)*Na*1e7/JtoCal
 E_solv_P = 0.5*sum(q*PHI_P)*Na*1e7/JtoCal
-#print 'With spherical harmonics: %f'%E_solv_sph
-print 'With Legendre functions : %f'%E_solv_P
+#print('With spherical harmonics: %f'%E_solv_sph)
+print('With Legendre functions : %f'%E_solv_P)
 '''

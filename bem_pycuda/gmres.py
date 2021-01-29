@@ -108,7 +108,7 @@ def gmres_solver (surf_array, field_array, X, b_clean, param, ind0, timing, kern
         beta = norm(r)
 
         if iteration==0: 
-            print 'Analytical integrals: %i of %i, %i'%(timing.AI_int/param.N, param.N, 100*timing.AI_int/param.N**2)+'%'
+            print('Analytical integrals: %i of %i, %i'%(timing.AI_int/param.N, param.N, 100*timing.AI_int/param.N**2)+'%')
 
         V[0,:] = r[:]/beta
         if iteration==0:
@@ -156,7 +156,7 @@ def gmres_solver (surf_array, field_array, X, b_clean, param, ind0, timing, kern
             rel_resid = abs(s[i+1])/res_0
 
             if iteration%1==0:
-                print 'iteration: %i, rel resid: %s'%(iteration,rel_resid)
+                print('iteration: %i, rel resid: %s'%(iteration,rel_resid))
 
 
             if (i+1==param.restart):
@@ -182,22 +182,22 @@ def gmres_solver (surf_array, field_array, X, b_clean, param, ind0, timing, kern
         time_update+=toc-tic
 
 
-#    print 'Time Vip1    : %fs'%time_Vi
-#    print 'Time Vk      : %fs'%time_Vk
-#    print 'Time rotation: %fs'%time_rotation
-#    print 'Time lu      : %fs'%time_lu
-#    print 'Time update  : %fs'%time_update
-    print 'GMRES solve'
-    print 'Converged after %i iterations to a residual of %s'%(iteration,rel_resid)
-    print 'Time weight vector: %f'%timing.time_mass
-    print 'Time sort         : %f'%timing.time_sort
-    print 'Time data transfer: %f'%timing.time_trans
-    print 'Time P2M          : %f'%timing.time_P2M
-    print 'Time M2M          : %f'%timing.time_M2M
-    print 'Time M2P          : %f'%timing.time_M2P
-    print 'Time P2P          : %f'%timing.time_P2P
-    print '\tTime analy: %f'%timing.time_an
-#    print 'Tolerance: %f, maximum iterations: %f'%(tol, max_iter)
+#    print('Time Vip1    : %fs'%time_Vi)
+#    print('Time Vk      : %fs'%time_Vk)
+#    print('Time rotation: %fs'%time_rotation)
+#    print('Time lu      : %fs'%time_lu)
+#    print('Time update  : %fs'%time_update)
+    print('GMRES solve')
+    print('Converged after %i iterations to a residual of %s'%(iteration,rel_resid))
+    print('Time weight vector: %f'%timing.time_mass)
+    print('Time sort         : %f'%timing.time_sort)
+    print('Time data transfer: %f'%timing.time_trans)
+    print('Time P2M          : %f'%timing.time_P2M)
+    print('Time M2M          : %f'%timing.time_M2M)
+    print('Time M2P          : %f'%timing.time_M2P)
+    print('Time P2P          : %f'%timing.time_P2P)
+    print('\tTime analy: %f'%timing.time_an)
+#    print('Tolerance: %f, maximum iterations: %f'%(tol, max_iter))
 
     return X
 
@@ -230,7 +230,7 @@ def gmres_sigma (surf, ss, X, b, param, ind0, timing, kernel):
         beta = norm(r)
 
         if iteration==0: 
-            print 'Analytical integrals: %i of %i, %i'%(timing.AI_int/param.N, param.N, 100*timing.AI_int/param.N**2)+'%'
+            print('Analytical integrals: %i of %i, %i'%(timing.AI_int/param.N, param.N, 100*timing.AI_int/param.N**2)+'%')
 
         V[0,:] = r[:]/beta
         if iteration==0:
@@ -280,7 +280,7 @@ def gmres_sigma (surf, ss, X, b, param, ind0, timing, kernel):
             rel_resid = abs(s[i+1])/res_0
 
             if iteration%1==0:
-                print 'iteration: %i, rel resid: %s'%(iteration,rel_resid)
+                print('iteration: %i, rel resid: %s'%(iteration,rel_resid))
 
 
             if (i+1==param.restart):
@@ -306,22 +306,22 @@ def gmres_sigma (surf, ss, X, b, param, ind0, timing, kernel):
         time_update+=toc-tic
 
 
-#    print 'Time Vip1    : %fs'%time_Vi
-#    print 'Time Vk      : %fs'%time_Vk
-#    print 'Time rotation: %fs'%time_rotation
-#    print 'Time lu      : %fs'%time_lu
-#    print 'Time update  : %fs'%time_update
-    print 'GMRES solve'
-    print 'Converged after %i iterations to a residual of %s'%(iteration,rel_resid)
-    print 'Time weight vector: %f'%timing.time_mass
-    print 'Time sort         : %f'%timing.time_sort
-    print 'Time data transfer: %f'%timing.time_trans
-    print 'Time P2M          : %f'%timing.time_P2M
-    print 'Time M2M          : %f'%timing.time_M2M
-    print 'Time M2P          : %f'%timing.time_M2P
-    print 'Time P2P          : %f'%timing.time_P2P
-    print '\tTime analy: %f'%timing.time_an
-#    print 'Tolerance: %f, maximum iterations: %f'%(tol, max_iter)
+#    print('Time Vip1    : %fs'%time_Vi)
+#    print('Time Vk      : %fs'%time_Vk)
+#    print('Time rotation: %fs'%time_rotation)
+#    print('Time lu      : %fs'%time_lu)
+#    print('Time update  : %fs'%time_update)
+    print('GMRES solve')
+    print('Converged after %i iterations to a residual of %s'%(iteration,rel_resid))
+    print('Time weight vector: %f'%timing.time_mass)
+    print('Time sort         : %f'%timing.time_sort)
+    print('Time data transfer: %f'%timing.time_trans)
+    print('Time P2M          : %f'%timing.time_P2M)
+    print('Time M2M          : %f'%timing.time_M2M)
+    print('Time M2P          : %f'%timing.time_M2P)
+    print('Time P2P          : %f'%timing.time_P2P)
+    print('\tTime analy: %f'%timing.time_an)
+#    print('Tolerance: %f, maximum iterations: %f'%(tol, max_iter))
 
     return X
 
@@ -346,20 +346,20 @@ tol = 1e-8
 tic = time.time()
 x = gmres_solver(A, x, b, R, tol, max_iter)
 toc = time.time()
-print 'Time for my GMRES: %fs'%(toc-tic)
+print('Time for my GMRES: %fs'%(toc-tic))
 
 tic = time.time()
 xs = solve(A, b)
 toc = time.time()
-print 'Time for stright solve: %fs'%(toc-tic)
+print('Time for stright solve: %fs'%(toc-tic))
 
 
 tic = time.time()
 xg = gmres(A, b, x, tol, R, max_iter)[0]
 toc = time.time()
-print 'Time for scipy GMRES: %fs'%(toc-tic)
+print('Time for scipy GMRES: %fs'%(toc-tic))
 
 
 error = sqrt(sum((xs-x)**2)/sum(xs**2))
-print 'error: %s'%error
+print('error: %s'%error)
 """

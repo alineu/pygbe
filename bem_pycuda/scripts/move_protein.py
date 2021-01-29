@@ -135,13 +135,13 @@ max_atom_vec = r_atom[max_atom]
 check_dipole = dot(d_0,array([1,1,1]))
 check_atom   = dot(max_atom_vec,array([1,1,1]))
 if verbose:
-    print 'Initial configuration:'
+    print('Initial configuration:')
 if abs(check_dipole - abs(d_0[1]))<1e-10: 
-    if verbose: print '\tDipole is aligned with normal'
-else: print '\tDipole NOT aligned!'
+    if verbose: print('\tDipole is aligned with normal')
+else: print('\tDipole NOT aligned!')
 if abs(check_atom - abs(max_atom_vec[0]))<1e-10: 
-    if verbose: print '\tMax atom is aligned with x axis'
-else: print '\tMax atom NOT aligned!'
+    if verbose: print('\tMax atom is aligned with x axis')
+else: print('\tMax atom NOT aligned!')
 
 
 ### Move to desired configuration
@@ -186,30 +186,30 @@ if alpha_y>pi:
     angley = 2*pi-angley    # Dot product finds the smallest angle!
 
 if verbose:
-    print 'Desired configuration:'
+    print('Desired configuration:')
 if abs(ctr[0])<1e-10 and abs(ctr[2])<1e-10:
     if verbose:
-        print '\tProtein is centered, %f angs over the surface'%(min(vert_new[:,1]))
+        print('\tProtein is centered, %f angs over the surface'%(min(vert_new[:,1])))
 else:
-    print '\tProtein NOT well located!'
+    print('\tProtein NOT well located!')
 
 if abs(d[2])<1e-10:
     if verbose:
-        print '\tDipole is on x-y plane, %f degrees from normal'%(angle*180/pi)
+        print('\tDipole is on x-y plane, %f degrees from normal'%(angle*180/pi))
 else:
-    print '\tDipole is NOT well aligned'
+    print('\tDipole is NOT well aligned')
 
 if abs(angle-alpha_z)<1e-10:
     if verbose:
-        print '\tMolecule was tilted correctly by %f deg'%(angle*180/pi)
+        print('\tMolecule was tilted correctly by %f deg'%(angle*180/pi))
 else:
-    print '\tMolecule was NOT tilted correctly!'
+    print('\tMolecule was NOT tilted correctly!')
 
 if abs(angley-alpha_y)<1e-10:
     if verbose:
-        print '\tMolecule was rotated correctly %f deg'%(angley*180/pi)
+        print('\tMolecule was rotated correctly %f deg'%(angley*180/pi))
 else:
-    print '\tMolecule was NOT rotated correctly!'
+    print('\tMolecule was NOT rotated correctly!')
 
 #### Save to file
 savetxt(outMesh+'.vert', vert_new)
@@ -219,4 +219,4 @@ os.system(cmd)
 modifypqr(inpqr+'.pqr', outpqr+'.pqr', xq_new)
 
 if verbose:
-    print '\nWritten to '+outMesh+'.vert(.face) and '+outpqr+'.pqr'
+    print('\nWritten to '+outMesh+'.vert(.face) and '+outpqr+'.pqr')

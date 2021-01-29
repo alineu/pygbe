@@ -135,7 +135,7 @@ def gmres_solver (A, x, b, R, tol, max_iter):
             rel_resid = abs(s[i+1])/res_0
 
             if iteration%1==0:
-                print 'Iteration: %i, residual: %s'%(iteration,rel_resid)
+                print('Iteration: %i, residual: %s'%(iteration,rel_resid))
 
             if rel_resid<tol:
                 break
@@ -162,13 +162,13 @@ def gmres_solver (A, x, b, R, tol, max_iter):
         toc = time.time()
         time_update+=toc-tic
 
-    print 'Converged after %i iterations to a residual of %s'%(iteration,rel_resid)
-#    print 'Time Vip1    : %fs'%time_Vi
-#    print 'Time Vk      : %fs'%time_Vk
-#    print 'Time rotation: %fs'%time_rotation
-#    print 'Time lu      : %fs'%time_lu
-#    print 'Time update  : %fs'%time_update
-#    print 'Tolerance: %f, maximum iterations: %f'%(tol, max_iter)
+    print('Converged after %i iterations to a residual of %s'%(iteration,rel_resid))
+#    print('Time Vip1    : %fs'%time_Vi)
+#    print('Time Vk      : %fs'%time_Vk)
+#    print('Time rotation: %fs'%time_rotation)
+#    print('Time lu      : %fs'%time_lu)
+#    print('Time update  : %fs'%time_update)
+#    print('Tolerance: %f, maximum iterations: %f'%(tol, max_iter))
 
     return x
 
@@ -193,20 +193,20 @@ tol = 1e-8
 tic = time.time()
 x = gmres_solver(A, x, b, R, tol, max_iter)
 toc = time.time()
-print 'Time for my GMRES: %fs'%(toc-tic)
+print('Time for my GMRES: %fs'%(toc-tic))
 
 tic = time.time()
 xs = solve(A, b)
 toc = time.time()
-print 'Time for stright solve: %fs'%(toc-tic)
+print('Time for stright solve: %fs'%(toc-tic))
 
 
 tic = time.time()
 xg = gmres(A, b, x, tol, R, max_iter)[0]
 toc = time.time()
-print 'Time for scipy GMRES: %fs'%(toc-tic)
+print('Time for scipy GMRES: %fs'%(toc-tic))
 
 
 error = sqrt(sum((xs-x)**2)/sum(xs**2))
-print 'error: %s'%error
+print('error: %s'%error)
 '''

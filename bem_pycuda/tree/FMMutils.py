@@ -22,8 +22,8 @@
 
 from numpy              import *
 from numpy              import sum as npsum
-from scipy.misc         import factorial
-from scipy.misc         import comb
+from scipy.special      import factorial
+from scipy.special      import comb
 
 # Wrapped code
 from multipole          import multipole_c, setIndex, getIndex_arr, multipole_sort, multipoleKt_sort
@@ -38,6 +38,7 @@ import time
 
 class Cell():
     def __init__ (self, NCRIT, Nm):
+        Nm = int(Nm)
         self.nsource   = 0       # Number of source particles
         self.ntarget = 0       # Number of target particles
         self.nchild  = 0      # Number of child boxes in binary
@@ -241,10 +242,10 @@ def sortPoints(surface, Cells, twig, param):
     surface.xjSort = surface.xj[surface.sortSource]
     surface.yjSort = surface.yj[surface.sortSource]
     surface.zjSort = surface.zj[surface.sortSource]
-    surface.AreaSort = surface.Area[surface.sortSource/param.K]
-    surface.sglInt_intSort = surface.sglInt_int[surface.sortSource/param.K]
-    surface.sglInt_extSort = surface.sglInt_ext[surface.sortSource/param.K]
-    surface.triangleSort = surface.triangle[surface.sortSource/param.K]
+    surface.AreaSort = surface.Area[surface.sortSource//param.K]
+    surface.sglInt_intSort = surface.sglInt_int[surface.sortSource//param.K]
+    surface.sglInt_extSort = surface.sglInt_ext[surface.sortSource//param.K]
+    surface.triangleSort = surface.triangle[surface.sortSource//param.K]
 
 def computeIndices(P, ind0):
     II = []

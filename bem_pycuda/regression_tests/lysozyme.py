@@ -57,46 +57,46 @@ out = 'regression_tests/output_aux'
 
 N = zeros(len(mesh))
 
-print 'Simulations for Lysozyme with single surface'
+print('Simulations for Lysozyme with single surface')
 iterations_single = zeros(len(mesh))
 Esolv_single = zeros(len(mesh))
 Esurf_single = zeros(len(mesh))
 Ecoul_single = zeros(len(mesh))
 Time_single = zeros(len(mesh))
 for i in range(len(mesh)):
-    print 'Start run for mesh '+mesh[i]
+    print('Start run for mesh '+mesh[i])
     cmd = comm + mesh[i] + '.config > ' + out
     os.system(cmd)
-    print 'Scan output file'
+    print('Scan output file')
     N[i],iterations_single[i],Esolv_single[i],Esurf_single[i],Ecoul_single[i],Time_single[i] = scanOutput(out)
 
 
 comm = './main.py regression_tests/input_files/lys.param regression_tests/input_files/lys_'
-print 'Simulations for Lysozyme full surface simulation'
+print('Simulations for Lysozyme full surface simulation')
 iterations_full = zeros(len(mesh))
 Esolv_full = zeros(len(mesh))
 Esurf_full = zeros(len(mesh))
 Ecoul_full = zeros(len(mesh))
 Time_full = zeros(len(mesh))
 for i in range(len(mesh)):
-    print 'Start run for mesh '+mesh[i]
+    print('Start run for mesh '+mesh[i])
     cmd = comm + mesh[i] + '.config > ' + out
     os.system(cmd)
-    print 'Scan output file'
+    print('Scan output file')
     N[i],iterations_full[i],Esolv_full[i],Esurf_full[i],Ecoul_full[i],Time_full[i] = scanOutput(out)
 
 comm = './main.py regression_tests/input_files/lys.param regression_tests/input_files/lys_k0_'
-print 'Simulations for Lysozyme with kappa=0'
+print('Simulations for Lysozyme with kappa=0')
 iterations_k0 = zeros(len(mesh))
 Esolv_k0 = zeros(len(mesh))
 Esurf_k0 = zeros(len(mesh))
 Ecoul_k0 = zeros(len(mesh))
 Time_k0 = zeros(len(mesh))
 for i in range(len(mesh)):
-    print 'Start run for mesh '+mesh[i]
+    print('Start run for mesh '+mesh[i])
     cmd = comm + mesh[i] + '.config > ' + out
     os.system(cmd)
-    print 'Scan output file'
+    print('Scan output file')
     N[i],iterations_k0[i],Esolv_k0[i],Esurf_k0[i],Ecoul_k0[i],Time_k0[i] = scanOutput(out)
 
 
@@ -122,42 +122,42 @@ thresh = 1e-2
 for i in range(len(error_single)):
     if error_single[i]>thresh:
         flag = 1
-        print 'Solvation energy not agreeing for single surface simulation, mesh %i by %f'%(i,error_single[i])
+        print('Solvation energy not agreeing for single surface simulation, mesh %i by %f'%(i,error_single[i]))
 
     if error_full[i]>thresh:
         flag = 1
-        print 'Solvation energy not agreeing for full surface simulation, mesh %i by %f'%(i,error_full[i])
+        print('Solvation energy not agreeing for full surface simulation, mesh %i by %f'%(i,error_full[i]))
 
     if error_FFTSVD[i]>thresh:
         flag = 1
-        print 'Solvation energy not agreeing with FFTSVD, mesh %i by %f'%(i,error_FFTSVD[i])
+        print('Solvation energy not agreeing with FFTSVD, mesh %i by %f'%(i,error_FFTSVD[i]))
 
 if flag==0:
-    print '\nPassed Esolv test!'
+    print('\nPassed Esolv test!')
 else:
-    print '\nFAILED Esolv test'
+    print('\nFAILED Esolv test')
 
 flag = 0
 thresh = 3
 for i in range(len(iter_diff_single)):
     if abs(iter_diff_single[i])>thresh:
         flag = 1
-        print 'Solvation energy not agreeing for single surface simulation, mesh %i by %f'%(i,iter_diff_single[i])
+        print('Solvation energy not agreeing for single surface simulation, mesh %i by %f'%(i,iter_diff_single[i]))
 
     if abs(iter_diff_full[i])>thresh:
         flag = 1
-        print 'Solvation energy not agreeing for full surface simulation, mesh %i by %f'%(i,iter_diff_full[i])
+        print('Solvation energy not agreeing for full surface simulation, mesh %i by %f'%(i,iter_diff_full[i]))
 
     if abs(iter_diff_FFTSVD[i])>thresh:
         flag = 1
-        print 'Solvation energy not agreeing with FFTSVD, mesh %i by %f'%(i,iter_diff_FFTSVD[i])
+        print('Solvation energy not agreeing with FFTSVD, mesh %i by %f'%(i,iter_diff_FFTSVD[i]))
 
 if flag==0:
-    print '\nPassed iterations test! They are all within %i iterations of reference'%thresh
+    print('\nPassed iterations test! They are all within %i iterations of reference'%thresh)
 else:
-    print '\nFAILED iterations test'
+    print('\nFAILED iterations test')
 
-print 'Summary:'
-print 'Single: Esolv: '+str(Esolv_single)+', iterations: '+str(iterations_single)
-print 'Full  : Esolv: '+str(Esolv_full)+', iterations: '+str(iterations_full)
-print 'k=0   : Esolv: '+str(Esolv_k0)+', iterations: '+str(iterations_k0)
+print('Summary:')
+print('Single: Esolv: '+str(Esolv_single)+', iterations: '+str(iterations_single))
+print('Full  : Esolv: '+str(Esolv_full)+', iterations: '+str(iterations_full))
+print('k=0   : Esolv: '+str(Esolv_k0)+', iterations: '+str(iterations_k0))

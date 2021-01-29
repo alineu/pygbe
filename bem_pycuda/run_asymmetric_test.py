@@ -122,7 +122,7 @@ for pqr_file in pqr_files_array:
     write_config_file(config_filename, mesh_files, mesh_type, pqr_file)
 
 # Run cases
-print 'ASYMMETRIC RUNS'
+print('ASYMMETRIC RUNS')
 Esolv_asym = numpy.zeros(len(config_filename_array)) 
 for i, config_filename in enumerate(config_filename_array):
     
@@ -136,16 +136,16 @@ for i, config_filename in enumerate(config_filename_array):
 
     # Check if file existas and if it contains anything (may be the file where previous run stopped)
     if os.path.isfile(output_file) and os.stat(output_file).st_size>2:
-	print 'Run already done for '+pqr_file
+	print('Run already done for '+pqr_file)
     else:
-        print 'Running '+config_filename+', saved on '+output_file+'...'
+        print('Running '+config_filename+', saved on '+output_file+'...')
         os.system(command)
     
     N,iterations,Esolv_asym[i],Esurf,Ecoul,Time = scanOutput(output_file)
 
-print 'Summary'
-print 'Surface\tpqr\tEsolv'
-print '----------------------------------------------'
+print('Summary')
+print('Surface\tpqr\tEsolv')
+print('----------------------------------------------')
 for i, config_filename in enumerate(config_filename_array):
     
     pqr_file = pqr_files_array[i]
@@ -153,9 +153,9 @@ for i, config_filename in enumerate(config_filename_array):
     i1 = pqr_file.find('.')
     i2 = srf_file.find('.')
 
-    print srf_file[i2-6:i2]+'\t'+pqr_file[i1-3:i1]+'\t'+str(Esolv_asym[i])
+    print(srf_file[i2-6:i2]+'\t'+pqr_file[i1-3:i1]+'\t'+str(Esolv_asym[i]))
 
-print 'SYMMETRIC RUNS'
+print('SYMMETRIC RUNS')
 Esolv_sym = numpy.zeros(len(config_filename_array)) 
 for i, config_filename in enumerate(config_filename_array):
     
@@ -167,14 +167,14 @@ for i, config_filename in enumerate(config_filename_array):
     output_file = 'output_sym_'+srf_file[i2-6:i2]+'_'+pqr_file[i1-3:i1]
     command = './main_asymmetric.py '+param_file+' '+config_filename+'>'+output_file
 
-    print 'Running '+config_filename+', saved on '+output_file+'...'
+    print('Running '+config_filename+', saved on '+output_file+'...')
 
     os.system(command)
     N,iterations,Esolv_sym[i],Esurf,Ecoul,Time = scanOutput(output_file)
 
-print 'Summary'
-print 'Surface\tpqr\tEsolv'
-print '----------------------------------------------'
+print('Summary')
+print('Surface\tpqr\tEsolv')
+print('----------------------------------------------')
 for i, config_filename in enumerate(config_filename_array):
     
     pqr_file = pqr_files_array[i]
@@ -182,4 +182,4 @@ for i, config_filename in enumerate(config_filename_array):
     i1 = pqr_file.find('.')
     i2 = srf_file.find('.')
 
-    print srf_file[i2-6:i2]+'\t'+pqr_file[i1-3:i1]+'\t'+str(Esolv_sym[i])
+    print(srf_file[i2-6:i2]+'\t'+pqr_file[i1-3:i1]+'\t'+str(Esolv_sym[i]))

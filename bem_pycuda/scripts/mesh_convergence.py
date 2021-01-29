@@ -67,7 +67,7 @@ for i in range(meshNumber):
 comm = './main.py ' + paramFile + ' ' + inputFile 
 out = 'regression_tests/output_aux'
 
-print 'Start runs'
+print('Start runs')
 N = numpy.zeros(len(mesh))
 iterations = numpy.zeros(len(mesh))
 Esolv = numpy.zeros(len(mesh))
@@ -75,28 +75,28 @@ Esurf = numpy.zeros(len(mesh))
 Ecoul = numpy.zeros(len(mesh))
 Time = numpy.zeros(len(mesh))
 for i in range(len(mesh)):
-    print 'Start run for mesh '+mesh[i]
+    print('Start run for mesh '+mesh[i])
     cmd = comm + mesh[i] + '.config > ' + out
     os.system(cmd)
-    print 'Scan output file'
+    print('Scan output file')
     N[i],iterations[i],Esolv[i],Esurf[i],Ecoul[i],Time[i] = scanOutput(out)
 
 
 # Richardson extrapolation
 for i in range(meshNumber-2):
-    print 'Using meshes ' + mesh[i] + ', ' + mesh[i+1] + ' and ' + mesh[i+2]
+    print('Using meshes ' + mesh[i] + ', ' + mesh[i+1] + ' and ' + mesh[i+2])
     q = (Esolv[i]*Esolv[i+2]-Esolv[i+1]*Esolv[i+1])/(Esolv[i]-2*Esolv[i+1]+Esolv[i+2])
     p = math.log((Esolv[i+2]-Esolv[i+1])/(Esolv[i+1]-Esolv[i]))/math.log(meshRefine)
-    print 'q = %f, p = %f'%(q,p)
+    print('q = %f, p = %f'%(q,p))
 
 
 error = abs(Esolv-q)/abs(q)
 
-print '\nNumber of elements : '+str(N)
-print 'Number of iteration: '+str(iterations)
-print 'Solvation energy   : '+str(Esolv)
-print 'Richardson extrapol: %f kcal/mol'%q
-print 'Observed order conv: %f'%p
-print 'Error              : '+str(error)
+print('\nNumber of elements : '+str(N))
+print('Number of iteration: '+str(iterations))
+print('Solvation energy   : '+str(Esolv))
+print('Richardson extrapol: %f kcal/mol'%q)
+print('Observed order conv: %f'%p)
+print('Error              : '+str(error))
 
 

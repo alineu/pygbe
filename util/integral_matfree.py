@@ -173,20 +173,20 @@ def AI_arr(DorN,y, x, same, E_hat):
     DIAG = where(same==1, 0., 1.)  # make diagonal of dG==0
 
     """
-    print 'chi'
-    print chi 
-    print 'theta0'
-    print theta0
-    print 'p00 p10 p11 p21 p02 p22'
-    print p00, p10, p11, p21, p02, p22
-    print 'q'
-    print q
-    print 'gamma'
-    print gamma
-    print 'THETA'
-    print THETA
-    print 'omega'
-    print dot(q[0],chi[0])
+    print('chi')
+    print(chi )
+    print('theta0')
+    print(theta0)
+    print('p00 p10 p11 p21 p02 p22')
+    print(p00, p10, p11, p21, p02, p22)
+    print('q')
+    print(q)
+    print('gamma')
+    print(gamma)
+    print('THETA')
+    print(THETA)
+    print('omega')
+    print(dot(q[0],chi[0]))
     """
 
     if DorN==0:

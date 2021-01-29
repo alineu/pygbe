@@ -23,7 +23,7 @@
 
 from numpy 			import *
 from math  			import pi
-from scipy.misc     import factorial
+from scipy.special import factorial
 import argparse
 import time
 
@@ -60,9 +60,9 @@ args = parser.parse_args()
 
 ### Time stamp
 timestamp = time.localtime()
-print 'Run started on:'
-print '\tDate: %i/%i/%i'%(timestamp.tm_year,timestamp.tm_mon,timestamp.tm_mday)
-print '\tTime: %i:%i:%i'%(timestamp.tm_hour,timestamp.tm_min,timestamp.tm_sec)
+print('Run started on:')
+print('\tDate: %i/%i/%i'%(timestamp.tm_year,timestamp.tm_mon,timestamp.tm_mday))
+print('\tTime: %i:%i:%i'%(timestamp.tm_hour,timestamp.tm_min,timestamp.tm_sec))
 
 TIC = time.time()
 ### Read parameters
@@ -106,8 +106,8 @@ for s in surf_array:
         param.Neq += N_aux
     else:
         param.Neq += 2*N_aux
-print '\nTotal elements : %i'%param.N
-print 'Total equations: %i'%param.Neq
+print('\nTotal elements : %i'%param.N)
+print('Total equations: %i'%param.Neq)
 
 printSummary(surf_array, field_array, param)
 
@@ -120,14 +120,14 @@ precomputeTerms(param.P, ind0)
 kernel = kernels(param.BSZ, param.Nm, param.K_fine, param.P, precision)
 
 ### Generate interaction list
-print 'Generate interaction list'
+print('Generate interaction list')
 tic = time.time()
 generateList(surf_array, field_array, param)
 toc = time.time()
 list_time = toc-tic
 
 ### Transfer data to GPU
-print 'Transfer data to GPU'
+print('Transfer data to GPU')
 tic = time.time()
 if param.GPU==1:
     dataTransfer(surf_array, field_array, ind0, param, kernel)
@@ -137,7 +137,7 @@ transfer_time = toc-tic
 timing = timings()
 
 ### Generate RHS
-print 'Generate RHS'
+print('Generate RHS')
 tic = time.time()
 if param.GPU==0:
     F = generateRHS(field_array, surf_array, param, kernel, timing, ind0)
@@ -149,16 +149,16 @@ rhs_time = toc-tic
 savetxt('RHS.txt',F)
 
 setup_time = toc-TIC
-print 'List time          : %fs'%list_time
-print 'Data transfer time : %fs'%transfer_time
-print 'RHS generation time: %fs'%rhs_time
-print '------------------------------'
-print 'Total setup time   : %fs\n'%setup_time
+print('List time          : %fs'%list_time)
+print('Data transfer time : %fs'%transfer_time)
+print('RHS generation time: %fs'%rhs_time)
+print('------------------------------')
+print('Total setup time   : %fs\n'%setup_time)
 
 tic = time.time()
 
 ### Solve
-print 'Solve'
+print('Solve')
 if args.asymmetric == True:
     Npicard = 20 
 else:
@@ -179,16 +179,16 @@ phi = zeros(param.Neq)
 
 # Asymmetric summary
 if args.asymmetric == True:
-    print 'Asymmetric parameters:'
-    print 'alpha: %f, beta: %f, gamma: %f'%(alpha, beta, gamma)
-    print 'Picard: \n\tmax iter: %i\ntolerance: %f'%(Npicard, tol_picard)
+    print('Asymmetric parameters:')
+    print('alpha: %f, beta: %f, gamma: %f'%(alpha, beta, gamma))
+    print('Picard: \n\tmax iter: %i\ntolerance: %f'%(Npicard, tol_picard))
 
 picardIter = 0
 phi_L2error = 1.
 while phi_L2error>tol_picard and picardIter<Npicard:
 
     if args.asymmetric == True and args.chargeForm == False:
-        print '\nPicard iteration %i'%picardIter
+        print('\nPicard iteration %i'%picardIter)
         for ss in range(len(surf_array)):
             s = surf_array[ss]
             if s.surf_type == 'dielectric_interface':
@@ -216,7 +216,7 @@ while phi_L2error>tol_picard and picardIter<Npicard:
             computePrecond(s)
 
     if args.asymmetric == True and args.chargeForm == True:
-        print '\nPicard iteration %i'%picardIter
+        print('\nPicard iteration %i'%picardIter)
         for ss in range(len(surf_array)):
             s = surf_array[ss]
             if s.surf_type == 'dielectric_interface':
@@ -229,7 +229,7 @@ while phi_L2error>tol_picard and picardIter<Npicard:
 
                 '''if sum(abs(RHS_sigma))>1e-12:
                     timing.AI_int = 0
-		    print 'Solve for sigma...'
+		    print('Solve for sigma...')
                     sigma = gmres_sigma(s, ss, sigma, RHS_sigma, param, ind0, timing, kernel)'''
                 for ff in field_array:
                     if len(ff.parent)>0:
@@ -277,7 +277,7 @@ while phi_L2error>tol_picard and picardIter<Npicard:
             computePrecond(s)
 
 
-    print 'Solve for phi...'
+    print('Solve for phi...')
     phi_old = phi.copy()    
     phi = gmres_solver(surf_array, field_array, phi, F, param, ind0, timing, kernel) 
     
@@ -290,32 +290,32 @@ while phi_L2error>tol_picard and picardIter<Npicard:
     picardIter += 1
 
 if picardIter<Npicard:
-    print 'Reached Picard tolerance of %1.4f'
-    print 'Error: '+str(phi_L2error)
+    print('Reached Picard tolerance of %1.4f' % picardIter)
+    print('Error: '+str(phi_L2error))
     
 
 toc = time.time()
 solve_time = toc-tic
-print 'Solve time        : %fs'%solve_time
+print('Solve time        : %fs'%solve_time)
 savetxt('phi.txt',phi)
 #phi = loadtxt('phi.txt')
 
 
 ### Calculate solvation energy
-print '\nCalculate Esolv'
+print('\nCalculate Esolv')
 tic = time.time()
 E_solv = calculateEsolv(surf_array, field_array, param, kernel)
 toc = time.time()
-print 'Time Esolv: %fs'%(toc-tic)
+print('Time Esolv: %fs'%(toc-tic))
 ii = -1
 for f in param.E_field:
     parent_type = surf_array[field_array[f].parent[0]].surf_type
     if parent_type != 'dirichlet_surface' and parent_type != 'neumann_surface':
         ii += 1
-        print 'Region %i: Esolv = %f kcal/mol = %f kJ/mol'%(f, E_solv[ii], E_solv[ii]*4.184)
+        print('Region %i: Esolv = %f kcal/mol = %f kJ/mol'%(f, E_solv[ii], E_solv[ii]*4.184))
 
 ### Calculate surface energy
-print '\nCalculate Esurf'
+print('\nCalculate Esurf')
 tic = time.time()
 E_surf = calculateEsurf(surf_array, field_array, param, kernel)
 toc = time.time()
@@ -324,30 +324,30 @@ for f in param.E_field:
     parent_type = surf_array[field_array[f].parent[0]].surf_type
     if parent_type == 'dirichlet_surface' or parent_type == 'neumann_surface':
         ii += 1
-        print 'Region %i: Esurf = %f kcal/mol = %f kJ/mol'%(f, E_surf[ii], E_surf[ii]*4.184)
-print 'Time Esurf: %fs'%(toc-tic)
+        print('Region %i: Esurf = %f kcal/mol = %f kJ/mol'%(f, E_surf[ii], E_surf[ii]*4.184))
+print('Time Esurf: %fs'%(toc-tic))
 
 ### Calculate Coulombic interaction
-print '\nCalculate Ecoul'
+print('\nCalculate Ecoul')
 tic = time.time()
 i = -1
 E_coul = []
 for f in field_array:
     i += 1
     if f.coulomb == 1:
-        print 'Calculate Coulomb energy for region %i'%i
+        print('Calculate Coulomb energy for region %i'%i)
         E_coul.append(coulombEnergy(f, param))
-        print 'Region %i: Ecoul = %f kcal/mol = %f kJ/mol'%(i,E_coul[-1],E_coul[-1]*4.184)
+        print('Region %i: Ecoul = %f kcal/mol = %f kJ/mol'%(i,E_coul[-1],E_coul[-1]*4.184))
 toc = time.time()
-print 'Time Ecoul: %fs'%(toc-tic)
+print('Time Ecoul: %fs'%(toc-tic))
 
 ### Output summary
-print '\n--------------------------------'
-print 'Totals:'
-print 'Esolv = %f kcal/mol'%sum(E_solv)
-print 'Esurf = %f kcal/mol'%sum(E_surf)
-print 'Ecoul = %f kcal/mol'%sum(E_coul)
-print '\nTime = %f s'%(toc-TIC)
+print('\n--------------------------------')
+print('Totals:')
+print('Esolv = %f kcal/mol'%sum(E_solv))
+print('Esurf = %f kcal/mol'%sum(E_surf))
+print('Ecoul = %f kcal/mol'%sum(E_coul))
+print('\nTime = %f s'%(toc-TIC))
 
 # Analytic solution
 '''
@@ -362,8 +362,8 @@ C0 = param.qe**2*param.Na*1e-3*1e10/(JtoCal*param.E_0)
 E_an *= C0/(4*pi)
 E1an *= C0/(4*pi)
 E2an *= C0/(4*pi)
-print '\n E_solv = %s kcal/mol, Analytical solution = %f kcal/mol, Error: %s'%(E_solv, E2an, abs(E_solv-E2an)/abs(E2an))
-print '\n E_solv = %s kJ/mol, Analytical solution = %f kJ/mol, Error: %s'%(E_solv*JtoCal, E2an*JtoCal, abs(E_solv-E2an)/abs(E2an))
+print('\n E_solv = %s kcal/mol, Analytical solution = %f kcal/mol, Error: %s'%(E_solv, E2an, abs(E_solv-E2an)/abs(E2an)))
+print('\n E_solv = %s kJ/mol, Analytical solution = %f kJ/mol, Error: %s'%(E_solv*JtoCal, E2an*JtoCal, abs(E_solv-E2an)/abs(E2an)))
 
 # sphere with stern layer
 K_sph = 20 # Number of terms in spherical harmonic expansion
@@ -378,9 +378,9 @@ q = field_array[1].q # no stern
 #xq = field_array[2].xq # stern
 xq = field_array[1].xq # no stern
 xq += 1e-12
-print q, xq, E_1, E_2, R1, field_array[0].kappa, R2, K_sph
+print(q, xq, E_1, E_2, R1, field_array[0].kappa, R2, K_sph)
 phi_P = an_P(q, xq, E_1, E_2, R1, field_array[0].kappa, R2, K_sph)
 JtoCal = 4.184
 E_P = 0.5*param.qe**2*sum(q*phi_P)*param.Na*1e7/JtoCal
-print '\n E_solv = %s, Legendre polynomial sol = %f, Error: %s'%(E_solv, E_P, abs(E_solv-E_P)/abs(E_P))
+print('\n E_solv = %s, Legendre polynomial sol = %f, Error: %s'%(E_solv, E_P, abs(E_solv-E_P)/abs(E_P)))
 '''

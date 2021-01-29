@@ -62,54 +62,54 @@ comm_matrix = './matrix_tests/main_matrix.py matrix_tests/input_files/sphere.par
 out_matrix = 'matrix_tests/output_matrix'
 
 for i in range(len(tests)):
-    print '\nStart run for test '+ tests[i]
-    print 'PyGBe run'
+    print('\nStart run for test '+ tests[i])
+    print('PyGBe run')
     cmd = comm + tests[i] + ' > ' + out
     os.system(cmd)
-    print 'Matrix run'
+    print('Matrix run')
     cmd = comm_matrix + tests[i] + ' > ' + out_matrix
     os.system(cmd)
 
-    print '\nScan output files'
+    print('\nScan output files')
     N,iterations,Esolv,Esurf,Ecoul,Time = scanOutput(out)
     N_m,iterations_m,Esolv_m,Esurf_m,Ecoul_m,Time_m = scanOutput(out_matrix)
 
     if iterations == iterations_m:
-        print '\tSame number of iterations!'
+        print('\tSame number of iterations!')
     else:
-        print '\tBAD: iterations differ by %i'%abs(iterations-iterations_m)
+        print('\tBAD: iterations differ by %i'%abs(iterations-iterations_m))
     e = abs(Esolv-Esolv_m)/abs(Esolv+1e-16)
     if e<1e-6:
-        print '\tSolvation energy matches!'
+        print('\tSolvation energy matches!')
     else:
-        print '\tBAD: solvation energy differs by %i%%'%(e*100)
+        print('\tBAD: solvation energy differs by %i%%'%(e*100))
 
     e = abs(Esurf-Esurf_m)/abs(Esurf+1e-16)
     if e<1e-6:
-        print '\tSurface energy matches!'
+        print('\tSurface energy matches!')
     else:
-        print '\tBAD: surface energy differs by %i%%'%(e*100)
+        print('\tBAD: surface energy differs by %i%%'%(e*100))
 
     e = abs(Ecoul-Ecoul_m)/abs(Ecoul+1e-16)
     if e<1e-6:
-        print '\tCoulomb energy matches!'
+        print('\tCoulomb energy matches!')
     else:
-        print '\tBAD: coulomb energy differs by %i%%'%(e*100)
+        print('\tBAD: coulomb energy differs by %i%%'%(e*100))
 
-    print '\nCheck intermediate steps'
+    print('\nCheck intermediate steps')
 
     thres = 1e-12
-    print 'Test RHS (threshold = %s)'%thres
+    print('Test RHS (threshold = %s)'%thres)
     a   = loadtxt('RHS.txt')
     a_m = loadtxt('RHS_matrix.txt')
     e = abs(a-a_m)/abs(a_m+1e-16)
     if max(e)<thres:
-        print '\tRHS matches!'
+        print('\tRHS matches!')
     else:
-        print '\tBAD: RHS differs by %s'%max(e)
+        print('\tBAD: RHS differs by %s'%max(e))
 
     thres = 1e-7
-    print 'Test GMRES Vip1 (threshold = %s)'%thres
+    print('Test GMRES Vip1 (threshold = %s)'%thres)
     for it in range(1,6):
         f  = 'Vip1'+str(it)+'.txt'
         fm = 'Vip1'+str(it)+'_matrix.txt'
@@ -117,16 +117,16 @@ for i in range(len(tests)):
         a_m = loadtxt(fm)
         e = abs(a-a_m)/abs(a_m+1e-16)
         if max(e)<thres:
-            print '\tVip1 of iteration %i matches!'%it
+            print('\tVip1 of iteration %i matches!'%it)
         else:
-            print '\tBAD: Vip1 of iteration %i differs by %s'%(it,max(e))
+            print('\tBAD: Vip1 of iteration %i differs by %s'%(it,max(e)))
 
     thres = 1e-4
-    print 'Test GMRES result (threshold = %s)'%thres
+    print('Test GMRES result (threshold = %s)'%thres)
     a   = loadtxt('phi.txt')
     a_m = loadtxt('phi_matrix.txt')
     e = abs(a-a_m)/abs(a_m+1e-16)
     if max(e)<thres:
-        print '\tGMRES result matches!'
+        print('\tGMRES result matches!')
     else:
-        print '\tBAD: GMRES result differs by %s'%max(e)
+        print('\tBAD: GMRES result differs by %s'%max(e))

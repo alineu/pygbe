@@ -54,7 +54,7 @@ def readVertex(filename, REAL):
 def readTriangle2(filename):
     triangle = []
 
-    for line in file(filename):
+    for line in open(filename):
         line = line.split()
         v1 = line[0]
         v2 = line[2] # v2 and v3 are flipped to match my sign convention!
@@ -105,17 +105,14 @@ def readpqr(filename, REAL):
     pos = []
     q   = []
     
-#    f = open("test","w")
+    f = open(filename,"r")
 
-    for line in file(filename):
+    for line in f.readlines():
         line = array(line.split())
         line_aux = []
-
-#        line_test = list(line[0:5])
-   
         if line[0]=='ATOM':
-	    if len(line)>10:
-		line = delete(line,4)
+            if len(line)>10:
+                line = delete(line,4)
 
             for l in range(len(line)-6):
                 aux = line[5+len(line_aux)]
@@ -123,7 +120,7 @@ def readpqr(filename, REAL):
                     X = readCheck(aux,REAL)
                     for i in range(len(X)):
                         line_aux.append(X[i])
-#                        line_test.append(str(X[i]))
+#                       line_test.append(str(X[i]))
                 else:
 #                    line_test.append(line[5+len(line_aux)])
                     line_aux.append(REAL(line[5+len(line_aux)]))
@@ -153,7 +150,8 @@ def readcrd(filename, REAL):
     q   = []
 
     start = 0
-    for line in file(filename):
+    f = open(filename,"r")
+    for line in f.readlines():
         line = array(line.split())
    
         if len(line)>8 and line[0]!='*':# and start==2:
@@ -177,7 +175,7 @@ def readcrd(filename, REAL):
 def readParameters(param, filename):
 
     val  = []
-    for line in file(filename):
+    for line in open(filename):
         line = line.split()
         val.append(line[1])
 
@@ -221,8 +219,8 @@ def readFields(filename):
     parent  = []
     Nchild  = []
     child   = []
-
-    for line in file(filename):
+    f = open(filename,"r")
+    for line in f.readlines():
         line = line.split()
         if len(line)>0:
             if line[0]=='FIELD':
@@ -246,7 +244,8 @@ def readSurf(filename):
     files = []
     surf_type = []
     phi0_file = []
-    for line in file(filename):
+    f = open(filename,"r")
+    for line in f.readlines():
         line = line.split()
         if len(line)>0:
             if line[0]=='FILE':
