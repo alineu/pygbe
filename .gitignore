@@ -8,7 +8,6 @@ test_*/**
 *.so
 *_wrap.cxx
 .ipynb_checkpoints
-*/.ipynb_checkpoints/*
 *.ppt
 *.pptx
 *.swp
