@@ -70,7 +70,7 @@ param = parameters()
 precision = readParameters(param, args.parameter_file)
 configFile = args.config_file
 
-param.Nm            = (param.P+1)*(param.P+2)*(param.P+3)/6     # Number of terms in Taylor expansion
+param.Nm            = (param.P+1)*(param.P+2)*(param.P+3)//6     # Number of terms in Taylor expansion
 param.BlocksPerTwig = int(ceil(param.NCRIT/float(param.BSZ)))   # CUDA blocks that fit per twig
 
 ### Generate array of fields

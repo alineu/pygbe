@@ -21,7 +21,7 @@ src/**
 #tutorials
 tutorials/*.html
 tutorials/*.ipynb
-tutorials/img/**
+tutorials/img
 
 # specific files
 bem_pycuda/tree/calculateMultipoles.py
@@ -43,7 +43,9 @@ bem_pycuda/Vip15.txt
 bem_pycuda/input_files/1d1sM/
 bem_pycuda/input_files/2d1sM/
 bem_pycuda/input_files/2d2sM/
+bem_pycuda/input_files/membrane_*
 bem_pycuda/.DS_Store
+geometry/membrane*
 #bem_pycuda/input_files/sphere_single.param
 #bem_pycuda/input_files/test_stern_2D_1S.config
 #bem_pycuda/input_files/test_stern_2D_1S_M.config
