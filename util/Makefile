@@ -6,7 +6,7 @@ OPTS = -fPIC -O3 -funroll-loops -msse3 -fopenmp
 
 PY_VER=$(shell python -c "import sys;t='{v[0]}.{v[1]}'.format(v=list(sys.version_info[:2]));sys.stdout.wri$
 #PY_INC=/home/mehdizadehrahimi.a/.conda/envs/pygbe-env-py3/include/python3.7m
-PY_INC=/usr/include/python$(PY_VER)
+PY_INC=/usr/local/include/python$(PY_VER)
 #PY_LIB=/home/mehdizadehrahimi.a/.conda/pkgs/numpy-1.19.5-py37haa41c4c_1/lib/python3.7/site-packages/numpy/$
 PY_LIB=/usr/local/lib/python$(PY_VER)/dist-packages/numpy/core/include
 
